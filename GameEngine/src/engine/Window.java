@@ -1,4 +1,4 @@
-package jade;
+package engine;
 
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
@@ -19,6 +19,8 @@ public class Window {
 	
 	private static Window window;
 	
+	private static Scene currentScene = null; 
+	
 	private Window() {
 		this.width = 1920;
 		this.height = 1080;
@@ -38,6 +40,14 @@ public class Window {
 		
 		init();
 		loop();
+		
+		//free memory and close window
+		
+		glfwFreeCallbacks(glfwWindow);
+		glfwDestroyWindow(glfwWindow);
+		
+		glfwTerminate();
+		glfwSetErrorCallback(null).free();
 	}
 	
 	public void init() {
@@ -66,14 +76,18 @@ public class Window {
 		glfwShowWindow(glfwWindow);
 		
 		GL.createCapabilities();
+		
+		currentScene = new Scene();
 	}
 	
 	public void loop() {
 		while(!glfwWindowShouldClose(glfwWindow)) {
 			glfwPollEvents();
 			
-			glClearColor(1.0f,0.0f,0.0f,1.0f);
+			glClearColor(1.0f,1.0f,1.0f,1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
+			
+			currentScene.update();
 			
 			glfwSwapBuffers(glfwWindow);
 		}
