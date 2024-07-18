@@ -69,6 +69,12 @@ public class Window {
 			throw new IllegalStateException("Failed to Create the GLFW window");
 		}
 		
+		glfwSetCursorPosCallback(glfwWindow, MouseListener::cursorPositionCallback);
+		glfwSetMouseButtonCallback(glfwWindow,MouseListener::mouseCallback);
+		glfwSetScrollCallback(glfwWindow,MouseListener::scrollCallback);
+		glfwSetKeyCallback(glfwWindow,KeyListener::keyCallback);
+		
+		
 		glfwMakeContextCurrent(glfwWindow);
 		
 		glfwSwapInterval(1);
@@ -86,6 +92,17 @@ public class Window {
 			
 			glClearColor(1.0f,1.0f,1.0f,1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
+			
+			Listener.changeListener(KeyListener.get());
+			if (KeyListener.getButton(GLFW_KEY_SPACE)) {
+				System.out.println("Space is pressed");
+			}
+			
+			Listener.changeListener(MouseListener.get());
+			if (MouseListener.getButton(GLFW_MOUSE_BUTTON_LEFT)) {
+				System.out.println("Left Click");
+				System.out.println("X: " + MouseListener.getXPosition() + " Y: " + MouseListener.getYPosition());
+			}
 			
 			currentScene.update();
 			

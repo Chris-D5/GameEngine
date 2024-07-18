@@ -34,9 +34,6 @@ public class Shader {
 			
 			types[1] = content.substring(startIndex, endIndex).trim();
 			
-			System.out.println(splitContent[1]);
-			System.out.println(splitContent[2]);
-			
 			if (types[0].equals("vertex")) {
 				vertexSrc = splitContent[1];
 			}
