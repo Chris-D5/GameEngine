@@ -5,8 +5,12 @@ import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.*;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 
 
 public class Shader {
@@ -112,5 +116,12 @@ public class Shader {
 		int location = glGetUniformLocation(shaderProgramID,name);
 		use();
 		glUniform1i(location, slot);
+	}
+	
+	public void addMatrix (String name, Matrix4f matrix) {
+		int location = glGetUniformLocation(shaderProgramID,name);
+		FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(4*Float.BYTES);
+		matrix.get(matrixBuffer);
+		glUniformMatrix4fv(location,false,matrixBuffer);
 	}
 }

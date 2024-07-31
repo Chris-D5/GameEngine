@@ -8,10 +8,13 @@ layout (location=2) in vec2 aTexture;
 out vec4 fColor;
 out vec2 fTexture;
 
+uniform mat4 uProjection;
+uniform mat4 uView;
+
 void main() {
 	fColor = aColor;
 	fTexture = aTexture;
-	gl_Position = vec4(aPos,1.0);
+	gl_Position = uProjection * uView * vec4(aPos,1.0);
 }	
 
 #type fragment

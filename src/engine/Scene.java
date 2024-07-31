@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL30.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
 import renderer.Shader;
@@ -15,34 +16,16 @@ import renderer.Texture;
 
 public class Scene {
 	
-	private String vertexShaderSrc = "#version 330 core\n"
-			+ "layout (location=0) in vec3 aPos;\n"
-			+ "layout (location=1) in vec4 aColor;\n"
-			+ "\n"
-			+ "out vec4 fColor;\n"
-			+ "void main() {\n"
-			+ "	fColor = aColor;\n"
-			+ "	gl_Position = vec4(aPos,1.0);\n"
-			+ "}";
-	
-	private String fragmentShaderSrc = "#version 330 core\n"
-			+ "\n"
-			+ "in vec4 fColor;\n"
-			+ "\n"
-			+ "out vec4 color;\n"
-			+ "\n"
-			+ "void main() {\n"
-			+ "	color = fColor;\n"
-			+ "}";
+	private Camera camera;
 	
 	private int vertexID, fragmentID, shaderProgram;
 	
 	private float[] vertexArray = {
-			//position 			//color					//texture
-			0.5f, -0.5f, 0.0f,	1.0f, 0.0f, 0.0f, 0.0f, 1,1,//bot right
-			-0.5f, 0.5f, 0.0f,	0.0f, 1.0f, 0.0f, 1.0f, 0,0,//top left
-			0.5f, 0.5f, 0.0f,	1.0f, 0.0f, 1.0f, 1.0f, 1,0,//top right
-			-0.5f, -0.5f, 0.0f,	1.0f, 1.0f, 0.0f, 1.0f, 0,1//bot left
+			//position 				//color					//texture
+			100.5f, -0.5f, 0.0f,	1.0f, 0.0f, 0.0f, 0.0f, 1,1,//bot right
+			-0.5f, 100.5f, 0.0f,	0.0f, 1.0f, 0.0f, 1.0f, 0,0,//top left
+			100.5f, 100.5f, 0.0f,	1.0f, 0.0f, 1.0f, 1.0f, 1,0,//top right
+			-0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 0.0f, 1.0f, 0,1//bot left
 			
 	};
 	
@@ -56,14 +39,20 @@ public class Scene {
 	private Shader defaultShader;
 	private Texture defaultTexture;
 	
+	
+	public Camera getCamera() {
+		return camera;
+	}
+	
 	public Scene() {
 		init();
 		System.out.println("Scene Created");
 	};
-	
 	public void update() {
-		
 		defaultShader.use();
+		defaultShader.addMatrix("uProjection", camera.getProjectionMatrix());
+		defaultShader.addMatrix("uView", camera.getViewMatrix());
+		
 		
 		glActiveTexture(GL_TEXTURE0);
 		defaultShader.addTexture("TEX_SAMPLER", 0);
@@ -85,6 +74,7 @@ public class Scene {
 	}
 	
 	public void init() {
+		camera = new Camera(new Vector2f(0f,0f));
 		
 		defaultShader = new Shader("Assets/Shaders/default.glsl");
 		defaultTexture = new Texture("Assets/Textures/testFlower.jpg");
