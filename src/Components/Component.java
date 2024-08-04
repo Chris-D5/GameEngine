@@ -1,4 +1,6 @@
-package engine;
+package Components;
+
+import engine.GameObject;
 
 public abstract class Component {
 	private GameObject gameObject;
@@ -7,5 +9,7 @@ public abstract class Component {
 		this.gameObject = gameObject;
 	}
 	
+	abstract public void start();
 	
+	abstract public void update();
 }

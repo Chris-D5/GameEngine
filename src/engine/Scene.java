@@ -7,16 +7,21 @@ import static org.lwjgl.opengl.GL30.*;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import Components.Sprite;
 import renderer.Shader;
 import renderer.Texture;
 
 public class Scene {
 	
 	private Camera camera;
+	
+	private List<GameObject> gameObjects;
 	
 	private int vertexID, fragmentID, shaderProgram;
 	
@@ -48,7 +53,15 @@ public class Scene {
 		init();
 		System.out.println("Scene Created");
 	};
+	
+	public void addGameObject(GameObject gameObject) {
+		gameObjects.add(gameObject);
+		gameObject.start();
+	}
+	
 	public void update() {
+		
+		
 		defaultShader.use();
 		defaultShader.addMatrix("uProjection", camera.getProjectionMatrix());
 		defaultShader.addMatrix("uView", camera.getViewMatrix());
@@ -71,10 +84,20 @@ public class Scene {
 		glBindVertexArray(0);
 		
 		defaultShader.detach();
+		
+		for (GameObject gameObject : gameObjects) {
+			gameObject.update();
+		}
 	}
 	
 	public void init() {
+		gameObjects = new ArrayList<GameObject>();
+		
 		camera = new Camera(new Vector2f(0f,0f));
+		GameObject flower = new GameObject();
+		Sprite flowerSprite = new Sprite();
+		flower.addComponent(flowerSprite);
+		addGameObject(flower);
 		
 		defaultShader = new Shader("Assets/Shaders/default.glsl");
 		defaultTexture = new Texture("Assets/Textures/testFlower.jpg");

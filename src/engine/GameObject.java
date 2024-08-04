@@ -1,9 +1,16 @@
 package engine;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import Components.Component;
 
 public class GameObject {
 	private List<Component> components; 
+	
+	public GameObject() {
+		this.components = new ArrayList<Component>();
+	}
 	
 	public <T extends Component>T getComponent(Class<T> componentClass) {
 		for (Component component : components) {
@@ -40,5 +47,13 @@ public class GameObject {
 	public void addComponent(Component component) {
 		components.add(component);
 		component.setGameObject(this);
+	}
+	
+	public void start() {
+		
+	}
+	
+	public void update() {
+		
 	}
 }
