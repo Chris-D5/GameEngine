@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joml.Vector2f;
+import org.joml.Vector4f;
 import org.lwjgl.BufferUtils;
 
 import Components.Sprite;
+import Components.*;
+import renderer.Renderer;
 import renderer.Shader;
 import renderer.Texture;
 
@@ -44,6 +47,8 @@ public class Scene {
 	private Shader defaultShader;
 	private Texture defaultTexture;
 	
+	private Renderer renderer;
+	
 	
 	public Camera getCamera() {
 		return camera;
@@ -60,8 +65,8 @@ public class Scene {
 	}
 	
 	public void update() {
-		
-		
+		renderer.render();
+		/*
 		defaultShader.use();
 		defaultShader.addMatrix("uProjection", camera.getProjectionMatrix());
 		defaultShader.addMatrix("uView", camera.getViewMatrix());
@@ -84,7 +89,7 @@ public class Scene {
 		glBindVertexArray(0);
 		
 		defaultShader.detach();
-		
+		*/
 		for (GameObject gameObject : gameObjects) {
 			gameObject.update();
 		}
@@ -95,14 +100,28 @@ public class Scene {
 		
 		camera = new Camera(new Vector2f(0f,0f));
 		GameObject flower = new GameObject();
-		Sprite flowerSprite = new Sprite();
+		Sprite flowerSprite = new Sprite("Assets/Textures/testFlower.jpg",new Vector4f(1.0f,0.0f,0.0f,1.0f));
+		Transform transform = new Transform(new Vector2f(100f,100f),new Vector2f(10f,10f));
 		flower.addComponent(flowerSprite);
+		flower.addComponent(transform);
 		addGameObject(flower);
 		
-		defaultShader = new Shader("Assets/Shaders/default.glsl");
-		defaultTexture = new Texture("Assets/Textures/testFlower.jpg");
+		GameObject flower2 = new GameObject();
+		Sprite flower2Sprite = new Sprite("Assets/Textures/testFlower.jpg",new Vector4f(1.0f,0.0f,0.0f,1.0f));
+		Transform transform2 = new Transform(new Vector2f(100f,100f),new Vector2f(10f,10f));
+		flower2.addComponent(flower2Sprite);
+		flower2.addComponent(transform2);
+		addGameObject(flower2);
 		
+		//defaultShader = new Shader("Assets/Shaders/default.glsl");
+		//defaultTexture = new Texture("Assets/Textures/testFlower.jpg");
 		
+		renderer = new Renderer();
+		
+		for (GameObject i : gameObjects) {
+			renderer.add(i);
+		}
+		/***
 		defaultShader.compile();
 		
 		// create vao vbo ebo buffer
@@ -135,6 +154,7 @@ public class Scene {
 		
 		glVertexAttribPointer(2,textureSize,GL_FLOAT,false,vertexByteSize,(positionsSize +colorSize) * Float.BYTES);
 		glEnableVertexAttribArray(2);
+		***/
 	}
 	
 }
