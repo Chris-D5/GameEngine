@@ -101,14 +101,14 @@ public class Scene {
 		camera = new Camera(new Vector2f(0f,0f));
 		GameObject flower = new GameObject();
 		Sprite flowerSprite = new Sprite("Assets/Textures/testFlower.jpg",new Vector4f(1.0f,0.0f,0.0f,1.0f));
-		Transform transform = new Transform(new Vector2f(100f,100f),new Vector2f(10f,10f));
+		Transform transform = new Transform(new Vector2f(100f,100f),new Vector2f(50f,50f));
 		flower.addComponent(flowerSprite);
 		flower.addComponent(transform);
 		addGameObject(flower);
 		
 		GameObject flower2 = new GameObject();
-		Sprite flower2Sprite = new Sprite("Assets/Textures/testFlower.jpg",new Vector4f(1.0f,0.0f,0.0f,1.0f));
-		Transform transform2 = new Transform(new Vector2f(100f,100f),new Vector2f(10f,10f));
+		Sprite flower2Sprite = new Sprite("Assets/Textures/appleTest.png",new Vector4f(1.0f,0.0f,0.0f,1.0f));
+		Transform transform2 = new Transform(new Vector2f(120f,120f),new Vector2f(50f,50f));
 		flower2.addComponent(flower2Sprite);
 		flower2.addComponent(transform2);
 		addGameObject(flower2);
